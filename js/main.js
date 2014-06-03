@@ -39,6 +39,8 @@ var pipeheight = s_pipeheight;
 var pipewidth = 52;
 var pipes = new Array();
 
+var totalPlays = 0;
+
 var replayclickable = false;
 
 //sounds
@@ -354,6 +356,7 @@ function playerDead()
    $(".animated").css('animation-play-state', 'paused');
    $(".animated").css('-webkit-animation-play-state', 'paused');
    
+   totalPlays += 1;
    //drop the bird to the floor
    var playerbottom = $("#player").position().top + $("#player").width(); //we use width because he'll be rotated 90 deg
    var floor = $("#flyarea").height();
@@ -386,6 +389,8 @@ function playerDead()
          });
       });
    }
+
+   //TODO unlock all profiles if 'totalPlays >=3'
 }
 
 function showScore()
@@ -459,11 +464,19 @@ function playerScore()
 {
    score += 1;
 
-   if(pipeheight > 90){
+   if (pipeheight > 90)
+   {
       pipeheight -= 10;
    }
-   
+   showAchievement();
+   if (score == 2)
+   {
+      
+   }
+
    updatePipes();
+
+   //TODO if score is 2,4,6,8,10 show notification for achievement unlock after 200ms delay
 
    //play score sound
    soundScore.stop();
@@ -471,6 +484,24 @@ function playerScore()
    setBigScore();
 }
 
+function showAchievement()
+{
+
+   $("#achievement").css("display", "block");
+   $("#achievement").css({ y: '40px', opacity: 0 }); //move it down so we can slide it up   
+   $("#achievement").transition({ y: '0px', opacity: 1}, 600, 'ease', function() {
+      soundSwoosh.stop();
+      soundSwoosh.play();
+   });
+   setTimeout(function(){hideAchievement()}, 1200);
+}
+
+function hideAchievement()
+{
+   $("#achievement").transition({ y: '-40px', opacity: 0}, 1000, 'ease', function() {
+   $("#achievement").css("display", "none");
+   });
+}
 function updatePipes()
 {
    //Do any pipes need removal?

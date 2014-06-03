@@ -36,9 +36,11 @@ var score = 0;
 var cumulative = 0;
 var highscore = 0;
 
-var pipeheight = 200;
+var s_pipeheight = 200;
 var pipewidth = 52;
 var pipes = new Array();
+
+var totalPlays = 0;
 
 var replayclickable = false;
 var profilesclickable = false;
@@ -156,7 +158,8 @@ function startGame()
    //start up our loops
    var updaterate = 1000.0 / 60.0 ; //60 times a second
    loopGameloop = setInterval(gameloop, updaterate);
-   loopPipeloop = setInterval(updatePipes, 1400);
+   // loopPipeloop = setInterval(updatePipes, 1400);
+   updatePipes();
    
    //jump from the start!
    playerJump();
@@ -383,6 +386,7 @@ function playerDead()
    $(".animated").css('animation-play-state', 'paused');
    $(".animated").css('-webkit-animation-play-state', 'paused');
    
+   totalPlays += 1;
    //drop the bird to the floor
    var playerbottom = $("#player").position().top + $("#player").width(); //we use width because he'll be rotated 90 deg
    var floor = $("#flyarea").height();
@@ -413,6 +417,8 @@ function playerDead()
          });
       });
    }
+
+   //TODO unlock all profiles if 'totalPlays >=3'
 }
 
 function showScore()
@@ -538,12 +544,58 @@ function showProfiles()
 function playerScore()
 {
    score += 1;
+   if (pipeheight > 90)
+      pipeheight -= 10;
+
+   //TODO if score is 2,4,6,8,10 show notification for achievement unlock after 200ms delay
+   if (score == 2)
+      showAchievement(score);
+   if (score == 4)
+      showAchievement(score);
+   if (score == 6)
+      showAchievement(score);
+   if (score == 8)
+      showAchievement(score);
+   // if (score == 10)
+   //    showAchievement(score);
+
+   updatePipes();
+
    //play score sound
    soundScore.stop();
    soundScore.play();
    setBigScore();
 }
 
+function showAchievement(score)
+{
+   if (score <= highscore)
+      return;
+
+   if (score == 4)
+      $("#achievement").css("background-image", "url('assets/achievement_s.png')");
+   if (score == 6)
+      $("#achievement").css("background-image", "url('assets/achievement_c.png')");
+   if (score == 8)
+      $("#achievement").css("background-image", "url('assets/achievement_r.png')");
+   // if (score == 10)
+   //    $("#achievement").css("background-image", "url('assets/achievement_s.png')");
+
+   $("#achievement").css("display", "block");
+   $("#achievement").css({ y: '40px', opacity: 0 }); //move it down so we can slide it up   
+   $("#achievement").transition({ y: '0px', opacity: 1}, 600, 'ease', function() {
+      soundSwoosh.stop();
+      soundSwoosh.play();
+   });
+   setTimeout(function(){hideAchievement()}, 1100);
+}
+
+function hideAchievement()
+{
+   $("#achievement").transition({ y: '-40px', opacity: 0}, 1000, 'ease', function() {
+   $("#achievement").css("display", "none");
+   });
+}
 function updatePipes()
 {
    //Do any pipes need removal?

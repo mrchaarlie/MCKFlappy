@@ -225,7 +225,7 @@ Screen - Game
    background-repeat: no-repeat;
 }
 
-#profiles
+#profiles, #selected-profile
 {
    position: absolute;
    opacity: 0;

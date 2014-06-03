@@ -33,10 +33,10 @@ var rotation = 0;
 var jump = -4.6;
 
 var score = 0;
-var cumulative = 0;
 var highscore = 0;
 
 var s_pipeheight = 200;
+var pipeheight = s_pipeheight;
 var pipewidth = 52;
 var pipes = new Array();
 
@@ -74,16 +74,6 @@ $(document).ready(function() {
    if(savedscore != "")
       highscore = parseInt(savedscore);
 
-   //get cumulative score
-   var cumulative = getCookie("cumulative");
-   if(cumulative != "")
-      cumulative = parseInt(cumulative);
-
-   //get next unlock value
-   var nextunlock = getCookie("nextunlock");
-   if(nextunlock != "")
-      nextunlock = parseInt(nextunlock);
-   
    //start with the splash screen
    showSplash();
 });
@@ -268,11 +258,6 @@ function gameloop() {
       playerScore();
    }
 
-   //have we unlocked an intern?
-   if (cumulative > nextunlock) {
-     //TODO display message that intern has been unlocked
-     nextunlock*=2;
-   }
 }
 
 //Handle space bar
@@ -337,15 +322,6 @@ function setSmallScore()
       elemscore.append("<img src='assets/font_small_" + digits[i] + ".png' alt='" + digits[i] + "'>");
 }
 
-function setTotalScore()
-{
-   var elemscore = $("#totalscore");
-   elemscore.empty();
-   
-   var digits = cumulative.toString().split('');
-   for(var i = 0; i < digits.length; i++)
-      elemscore.append("<img src='assets/font_small_" + digits[i] + ".png' alt='" + digits[i] + "'>");
-}
 function setHighScore()
 {
    var elemscore = $("#highscore");
@@ -418,7 +394,12 @@ function playerDead()
       });
    }
 
-   //TODO unlock all profiles if 'totalPlays >=3'
+   //unlock all profiles if 'totalPlays >=3'
+   if (totalPlays >= 3) {
+     for (i = 0; i < numinterns; i++) {
+       internclickable[i] = true;
+     }
+   }
 }
 
 function showScore()
@@ -429,10 +410,6 @@ function showScore()
    //remove the big score
    setBigScore(true);
    
-   cumulative+= score;
-   setCookie("cumulative", cumulative, 999);
-   setCookie("nextunlock", nextunlock, 999);
-
    //have they beaten their high score?
    if(score > highscore)
    {
@@ -445,7 +422,6 @@ function showScore()
    //update the scoreboard
    setSmallScore();
    setHighScore();
-   setTotalScore();
    var wonmedal = setMedal();
    
    //SWOOSH!
@@ -528,9 +504,12 @@ function internHandle(i) {
 }
 
 function showIntern(i) {
-  $("#profiles").html("");
-  //TODO append text and picture of given intern
-  //have back button
+   //fade out the scoreboard
+   $("#profiles").transition({ y: '-40px', opacity: 0}, 1000, 'ease', function() {
+      //when that's done, display us back to nothing
+      $("#profiles").css("display", "none");
+       $("#selected-profile").transition({ opacity: 1 }, 2000, 'ease');
+   });
 }
   
 
@@ -538,7 +517,16 @@ function showProfiles()
 {
    currentstate = states.ProfileScreen;
    $("#profiles").transition({ opacity: 1 }, 2000, 'ease');
-   //TODO insert replay button here as well
+   unlockProfiles();
+   $("#replay").transition({ opacity: 1 }, 2000, 'ease');
+}
+
+function unlockProfiles()
+{
+  for (var i = 0; i < numinterns; i++) {
+    if (highscore >= 2*i)
+      internclickable[i] = true;
+  }
 }
 
 function playerScore()
@@ -547,14 +535,8 @@ function playerScore()
    if (pipeheight > 90)
       pipeheight -= 10;
 
-   //TODO if score is 2,4,6,8,10 show notification for achievement unlock after 200ms delay
-   if (score == 2)
-      showAchievement(score);
-   if (score == 4)
-      showAchievement(score);
-   if (score == 6)
-      showAchievement(score);
-   if (score == 8)
+   //if score is 2,4,6,8,10 show notification for achievement unlock after 200ms delay
+   if (score == 2 || score == 4 || score == 6 || score == 8)
       showAchievement(score);
    // if (score == 10)
    //    showAchievement(score);
@@ -574,12 +556,10 @@ function showAchievement(score)
 
    if (score == 4)
       $("#achievement").css("background-image", "url('assets/achievement_s.png')");
-   if (score == 6)
+   else if (score == 6)
       $("#achievement").css("background-image", "url('assets/achievement_c.png')");
-   if (score == 8)
+   else if (score == 8)
       $("#achievement").css("background-image", "url('assets/achievement_r.png')");
-   // if (score == 10)
-   //    $("#achievement").css("background-image", "url('assets/achievement_s.png')");
 
    $("#achievement").css("display", "block");
    $("#achievement").css({ y: '40px', opacity: 0 }); //move it down so we can slide it up   

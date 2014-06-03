@@ -15,12 +15,13 @@
    limitations under the License.
 */
 
-var debugmode = true;
+var debugmode = false;
 
 var states = Object.freeze({
    SplashScreen: 0,
    GameScreen: 1,
-   ScoreScreen: 2
+   ScoreScreen: 2,
+   ProfileScreen: 3
 });
 
 var currentstate;
@@ -32,14 +33,20 @@ var rotation = 0;
 var jump = -4.6;
 
 var score = 0;
+var cumulative = 0;
 var highscore = 0;
 
-var s_pipeheight = 150;
-var pipeheight = s_pipeheight;
+var pipeheight = 200;
 var pipewidth = 52;
 var pipes = new Array();
 
 var replayclickable = false;
+var profilesclickable = false;
+
+var numinterns = 5;
+var internclickable = new Array(numinterns);
+for (var i = 0; i < numinterns; i++) { internclickable[i] = false };
+var nextunlock = 1;
 
 //sounds
 var volume = 30;
@@ -66,6 +73,16 @@ $(document).ready(function() {
    var savedscore = getCookie("highscore");
    if(savedscore != "")
       highscore = parseInt(savedscore);
+
+   //get cumulative score
+   var cumulative = getCookie("cumulative");
+   if(cumulative != "")
+      cumulative = parseInt(cumulative);
+
+   //get next unlock value
+   var nextunlock = getCookie("nextunlock");
+   if(nextunlock != "")
+      nextunlock = parseInt(nextunlock);
    
    //start with the splash screen
    showSplash();
@@ -141,8 +158,8 @@ function startGame()
    //start up our loops
    var updaterate = 1000.0 / 60.0 ; //60 times a second
    loopGameloop = setInterval(gameloop, updaterate);
-   // loopPipeloop = setInterval(updatePipes, 1400);
-   updatePipes();
+   loopPipeloop = setInterval(updatePipes, 1400);
+   
    //jump from the start!
    playerJump();
 }
@@ -212,7 +229,6 @@ function gameloop() {
    var pipeleft = nextpipeupper.offset().left - 2; // for some reason it starts at the inner pipes offset, not the outer pipes.
    var piperight = pipeleft + pipewidth;
    var pipebottom = pipetop + pipeheight;
-
    
    if(debugmode)
    {
@@ -314,6 +330,15 @@ function setSmallScore()
       elemscore.append("<img src='assets/font_small_" + digits[i] + ".png' alt='" + digits[i] + "'>");
 }
 
+function setTotalScore()
+{
+   var elemscore = $("#totalscore");
+   elemscore.empty();
+   
+   var digits = cumulative.toString().split('');
+   for(var i = 0; i < digits.length; i++)
+      elemscore.append("<img src='assets/font_small_" + digits[i] + ".png' alt='" + digits[i] + "'>");
+}
 function setHighScore()
 {
    var elemscore = $("#highscore");
@@ -369,8 +394,6 @@ function playerDead()
    loopGameloop = null;
    loopPipeloop = null;
 
-   pipeheight = s_pipeheight;
-
    //mobile browsers don't support buzz bindOnce event
    if(isIncompatible.any())
    {
@@ -396,6 +419,10 @@ function showScore()
    //remove the big score
    setBigScore(true);
    
+   cumulative+= score;
+   setCookie("cumulative", cumulative, 999);
+   setCookie("nextunlock", nextunlock, 999);
+
    //have they beaten their high score?
    if(score > highscore)
    {
@@ -408,6 +435,7 @@ function showScore()
    //update the scoreboard
    setSmallScore();
    setHighScore();
+   setTotalScore();
    var wonmedal = setMedal();
    
    //SWOOSH!
@@ -417,11 +445,13 @@ function showScore()
    //show the scoreboard
    $("#scoreboard").css({ y: '40px', opacity: 0 }); //move it down so we can slide it up
    $("#replay").css({ y: '40px', opacity: 0 });
+   $("#view-profiles").css({ y: '40px', opacity: 0 });
    $("#scoreboard").transition({ y: '0px', opacity: 1}, 600, 'ease', function() {
       //When the animation is done, animate in the replay button and SWOOSH!
       soundSwoosh.stop();
       soundSwoosh.play();
       $("#replay").transition({ y: '0px', opacity: 1}, 600, 'ease');
+      $("#view-profiles").transition({ y: '0px', opacity: 1}, 600, 'ease');
       
       //also animate in the MEDAL! WOO!
       if(wonmedal)
@@ -433,6 +463,7 @@ function showScore()
    
    //make the replay button clickable
    replayclickable = true;
+   profilesclickable = true;
 }
 
 $("#replay").click(function() {
@@ -455,16 +486,54 @@ $("#replay").click(function() {
    });
 });
 
+$("#view-profiles").click(function() {
+   if(!profilesclickable)
+      return;
+   else
+      profilesclickable = false;
+
+   //fade out the scoreboard
+   $("#scoreboard").transition({ y: '-40px', opacity: 0}, 1000, 'ease', function() {
+      //when that's done, display us back to nothing
+      $("#scoreboard").css("display", "none");
+      
+      //view intern profiles
+      showProfiles();
+   });
+});
+
+
+for (var i = 0; i < numinterns; i++) {
+  internHandle(i)
+}
+
+function internHandle(i) {
+  $("#intern" + i).click(function() {
+    //check that intern is unlocked
+    if (!internclickable[i])
+      return;
+    else
+      showIntern(i);
+  });
+}
+
+function showIntern(i) {
+  $("#profiles").html("");
+  //TODO append text and picture of given intern
+  //have back button
+}
+  
+
+function showProfiles()
+{
+   currentstate = states.ProfileScreen;
+   $("#profiles").transition({ opacity: 1 }, 2000, 'ease');
+   //TODO insert replay button here as well
+}
+
 function playerScore()
 {
    score += 1;
-
-   if(pipeheight > 90){
-      pipeheight -= 10;
-   }
-   
-   updatePipes();
-
    //play score sound
    soundScore.stop();
    soundScore.play();

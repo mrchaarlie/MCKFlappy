@@ -225,6 +225,18 @@ Screen - Game
    background-repeat: no-repeat;
 }
 
+#profiles
+{
+   position: absolute;
+   opacity: 0;
+   top: 25px;
+   left: 65px;
+   width: 80%;
+   height: 80%;
+   background-image: url('../assets/temp-profile-select.png');
+   background-repeat: no-repeat;
+}
+
 #scoreboard
 {
    position: absolute;
@@ -285,7 +297,18 @@ Screen - Game
    position: absolute;
    opacity: 0;
    top: 205px;
-   left: 61px;
+   left: 5px;
+   height: 115px;
+   width: 70px;
+   cursor: pointer;
+}
+
+#view-profiles
+{
+   position: absolute;
+   opacity: 0;
+   top: 205px;
+   left: 120px;
    height: 115px;
    width: 70px;
    cursor: pointer;

@@ -61,8 +61,6 @@ buzz.all().setVolume(volume);
 var loopGameloop;
 var loopPipeloop;
 
-
-
 $(document).ready(function() {
    if(window.location.search == "?debug")
       debugmode = true;
@@ -265,6 +263,12 @@ function gameloop() {
       
       //and score a point
       playerScore();
+   }
+
+   //have we unlocked an intern?
+   if (cumulative > nextunlock) {
+     //TODO display message that intern has been unlocked
+     nextunlock*=2;
    }
 }
 

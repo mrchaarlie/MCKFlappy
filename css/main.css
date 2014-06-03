@@ -229,11 +229,12 @@ Screen - Game
 {
    position: absolute;
    opacity: 0;
-   top: 25px;
+   top: 5px;
    left: 65px;
-   width: 80%;
-   height: 80%;
-   background-image: url('../assets/temp-profile-select.png');
+   width: 400px;
+   height: 300px;
+   background-image: url('../assets/achievement\ page.png');
+   background-size: cover;
    background-repeat: no-repeat;
 }
 
@@ -250,6 +251,38 @@ Screen - Game
    background-repeat: no-repeat;
    
    z-index: 1000;
+}
+
+#intern1
+{
+  position: absolute;
+  top: 75px;
+  left: 30px;
+}
+
+#intern2
+{
+  position: absolute;
+  top: 75px;
+  left: 200px;
+}
+
+#intern3
+{
+  position: absolute;
+  top: 170px;
+  left: 30px;
+  width: 100px;
+  height: 100px;
+}
+
+#intern4
+{
+  position: absolute;
+  top: 170px;
+  left: 200px;
+  width: 100px;
+  height: 100px;
 }
 
 #medal

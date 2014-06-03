@@ -465,18 +465,21 @@ function playerScore()
    score += 1;
 
    if (pipeheight > 90)
-   {
       pipeheight -= 10;
-   }
-   showAchievement();
-   if (score == 2)
-   {
-      
-   }
-
-   updatePipes();
 
    //TODO if score is 2,4,6,8,10 show notification for achievement unlock after 200ms delay
+   if (score == 2)
+      showAchievement(score);
+   if (score == 4)
+      showAchievement(score);
+   if (score == 6)
+      showAchievement(score);
+   if (score == 8)
+      showAchievement(score);
+   // if (score == 10)
+   //    showAchievement(score);
+
+   updatePipes();
 
    //play score sound
    soundScore.stop();
@@ -484,8 +487,19 @@ function playerScore()
    setBigScore();
 }
 
-function showAchievement()
+function showAchievement(score)
 {
+   if (score <= highscore)
+      return;
+
+   if (score == 4)
+      $("#achievement").css("background-image", "url('assets/achievement_s.png')");
+   if (score == 6)
+      $("#achievement").css("background-image", "url('assets/achievement_c.png')");
+   if (score == 8)
+      $("#achievement").css("background-image", "url('assets/achievement_r.png')");
+   // if (score == 10)
+   //    $("#achievement").css("background-image", "url('assets/achievement_s.png')");
 
    $("#achievement").css("display", "block");
    $("#achievement").css({ y: '40px', opacity: 0 }); //move it down so we can slide it up   
@@ -493,7 +507,7 @@ function showAchievement()
       soundSwoosh.stop();
       soundSwoosh.play();
    });
-   setTimeout(function(){hideAchievement()}, 1200);
+   setTimeout(function(){hideAchievement()}, 1100);
 }
 
 function hideAchievement()

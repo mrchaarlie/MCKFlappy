@@ -245,10 +245,10 @@ Screen - Game
    display: none;
    opacity: 0;
    top: 380px;
-   left: 65px;
-   width: 195px;
+   left: 45px;
+   width: 232px;
    height: 74px;
-   background-image: url('../assets/achievement.png');
+   background-image: url('../assets/achievement_a.png');
    background-repeat: no-repeat;
    
    z-index: 1000;

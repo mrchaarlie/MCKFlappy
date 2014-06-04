@@ -54,7 +54,9 @@ var interns = [
   icon: "assets/ashishbird.png",
   bw: "assets/ashish_bw.png",
   birdface: "assets/internbirdy_0002_ashish-bird.png",
-  description: "blah blah",
+  summary: "Ashish <br/> Product Owner <br/> 'Agile Accelerator'",
+  background: "Age 27 <br/> Syracuse University <br/> Information Management",
+  description: "Ashish is a driven team payer who maintains constant focus on quality. He aspires to master agile software development framework and data analytics methodologies. Ashish has worked with organizations operating in healthcare, market research, web development, consulting and banking industry. ​",
   unlocked: false
 }, 
 {
@@ -63,7 +65,9 @@ var interns = [
   icon: "assets/stephenbird.png",
   bw: "assets/stephen_bw.png",
   birdface: "assets/internbirdy_0001_stephen-bird.png",
-  description: "blah",
+  summary: "Stephen Liu <br/> Designer <br/> 'Photoshop Phreak'",
+  background: "Age 20 <br/> New York University <br/> Finance & Accounting Major",
+  description: "Throughout high school, I hoped to study animation. Although I ended up studying business, I still draw and paint in my spare time and enjoy art immensely. I am also an avid gamer. I mostly play strategy games and trading card games, where the most important thing is making the right decisions. During my summer at McKinsey, I hope to not only become a more thoughtful designer but to also learn more about effective project management and communication. I love Chinese food, American barbeque, sushi, and long walks on the beach.",
   unlocked: false
 },
 {
@@ -72,7 +76,9 @@ var interns = [
   icon: "assets/charliebird.png",
   bw: "assets/charlie_bw.png",
   birdface: "assets/internbirdy_0000_charlie-bird.png",
-  description: "Blah blah blah",
+  summary: "Charlie Wu <br/> Designer <br/> 'Wireframe Wizard'",
+  background: "Age 20 <br/> University of Waterloo <br/> System Design Engineering Major",
+  description: "Hi, I'm Charlie! I hail from the Great White North (Canada), studying Systems Design Engineering at the University of Waterloo. I'm in my final year, and have had five (yes 5), previous work terms - it's part of a degree requirement. So I've had a fair amount of exposure to pretty much everything. If you see me around, make sure to stop and chat!",
   unlocked: false
 },
 {
@@ -81,7 +87,9 @@ var interns = [
   icon: "assets/rachelbird.png",
   bw: "assets/rachel_bw.png",
   birdface: "assets/internbirdy_0003_rachel-bird.png",
-  description: "blah",
+  summary: "Rachel Macfarlane <br/> Developer <br/> 'Ruby on Railgun'",
+  background: "Age 21 <br/> Harvey Mudd College <br/> Computer Science Major",
+  description: "Recently returned from a semester abroad in Sweden, I'm still getting used to night that actually lasts more than 3 hours. I love writing code, but originally harbored biology-major intentions before taking my first computer science course. I'm still interested in biology, but programming is my real passion. I enjoy hiking and being outdoors when the weather is cooperative. I also like playing board games; let me know if you ever want to play Settlers of Catan!",
   unlocked: false
 } 
 ]
@@ -558,7 +566,7 @@ for (var i = 0; i < numinterns; i++) {
 }
 
 function internHandle(i) {
-  $("#intern" + i).click(function() {
+  $("#img" + i).click(function() {
     //check that intern is unlocked
     if (!interns[i].unlocked)
       return;
@@ -578,7 +586,7 @@ function internHandle(i) {
         currentavatar = null;
       }
       //selecting another player
-      else if (currentavatar) {
+      else if (currentavatar || currentavatar === 0) {
         //gray out current player, change bird and color the icon of new
         $("#select" + currentavatar).attr('src', interns[currentavatar].bw);
         $("#player").css("background-image", "url('" + interns[i].birdface + "')");
@@ -603,8 +611,10 @@ function showIntern(i) {
        $("#selected-profile").transition({ opacity: 1 }, 2000, 'ease');
    });
    $("#selected-profile").css("display", "block");
-   $("#selected-profile").append("<div id='pic'><img src='" + interns[i].picture + "'>");
-   $("#profile-text").innerHTML = interns[i].description;
+   $("#pic").attr("src", interns[i].picture);
+   $("#summary").html(interns[i].summary);
+   $("#background-info").html(interns[i].background);
+   $("#profile-text").html(interns[i].description);
 }
   
 

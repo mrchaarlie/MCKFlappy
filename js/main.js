@@ -49,31 +49,44 @@ var numinterns = 4;
 
 var interns = [
 {
-  name: "Charles Wu",
-  picture: "assets/charlie.jpg",
-  birdface: "assets/charliebird.png'",
-  description: "Blah blah blah",
+  name: "Ashish",
+  picture: "assets/ashishh.jpg",
+  icon: "assets/ashishbird.png",
+  bw: "assets/ashish_bw.png",
+  birdface: "assets/internbirdy_0002_ashish-bird.png",
+  description: "blah blah",
   unlocked: false
-},
+}, 
 {
   name: "Stephen Liu",
   picture: "assets/stephenjpg.jpg",
+  icon: "assets/stephenbird.png",
+  bw: "assets/stephen_bw.png",
+  birdface: "assets/internbirdy_0001_stephen-bird.png",
   description: "blah",
+  unlocked: false
+},
+{
+  name: "Charles Wu",
+  picture: "assets/charlie.jpg",
+  icon: "assets/charliebird.png",
+  bw: "assets/charlie_bw.png",
+  birdface: "assets/internbirdy_0000_charlie-bird.png",
+  description: "Blah blah blah",
   unlocked: false
 },
 {
   name: "Rachel Macfarlane",
   picture: "assets/rachel.jpg",
+  icon: "assets/rachelbird.png",
+  bw: "assets/rachel_bw.png",
+  birdface: "assets/internbirdy_0003_rachel-bird.png",
   description: "blah",
-  unlocked: false
-}, 
-{
-  name: "Ashish",
-  picture: "assets/ashishh.jpg",
-  description: "blah blah",
   unlocked: false
 } 
 ]
+
+var currentavatar = null;
 
 //sounds
 var volume = 30;
@@ -178,6 +191,9 @@ function startGame()
    
    //jump from the start!
    playerJump();
+
+   //don't allow intern clicking during game
+   for (var i = 0; i < numinterns; i++) interns[i].unlocked = false;
 }
 
 function updatePlayer(player)
@@ -421,8 +437,8 @@ function playerDead()
 
    //unlock all profiles if 'totalPlays >=3'
    if (totalPlays >= 3) {
-     for (i = 0; i < numinterns; i++) {
-       intern[i].unlocked = true;
+     if (highscore < 10) {
+       highscore = 10;
      }
    }
 }
@@ -512,7 +528,6 @@ $("#replay-profile").click(function() {
 
 $("#back").click(function() {
    $("#selected-profile").transition({ y: '-40px', opacity: 0}, 1000, 'ease', function() {
-      $("#selected-profile :last-child").remove();
       $("#selected-profile").css("display", "none");
       
       //redisplay profile select
@@ -550,6 +565,34 @@ function internHandle(i) {
     else
       showIntern(i);
   });
+
+  $("#select" + i).click(function() {
+    if (!interns[i].unlocked)
+      return;
+    else {
+      //deselecting current player as avatar 
+      if (currentavatar === i) {
+        //gray out player, reset the bird
+        $("#select" + i).attr('src', interns[i].bw);
+        $("#player").css("background-image", "url('assets/bird.png')");
+        currentavatar = null;
+      }
+      //selecting another player
+      else if (currentavatar) {
+        //gray out current player, change bird and color the icon of new
+        $("#select" + currentavatar).attr('src', interns[currentavatar].bw);
+        $("#player").css("background-image", "url('" + interns[i].birdface + "')");
+        $("#select" + i).attr('src', interns[i].icon);
+        currentavatar = i;
+      }
+      //selecting a player for the first time
+      else {
+        $("#player").css("background-image", "url('" + interns[i].birdface + "')");
+        $("#select" + i).attr('src', interns[i].icon);
+        currentavatar = i;
+      }
+    }
+  });
 }
 
 function showIntern(i) {
@@ -576,9 +619,11 @@ function showProfiles()
 function unlockProfiles()
 {
   for (var i = 0; i < numinterns; i++) {
-    if (highscore >= 2*i) {
+    var unlockscores = [2, 4, 6, 8]
+    if (highscore >= unlockscores[i]) {
       interns[i].unlocked = true;
       $("#lock" + i).css("display", "none");
+      $("#intern" + i).css("-webkit-filter", "grayscale(0%)");
     }
   }
 }
@@ -606,7 +651,9 @@ function showAchievement(score)
    if (score <= highscore)
       return;
 
-   if (score == 4)
+   if (score == 2)
+      $("#achievement").css("background-image", "url('assets/achievement_a.png')");
+   else if (score == 4)
       $("#achievement").css("background-image", "url('assets/achievement_s.png')");
    else if (score == 6)
       $("#achievement").css("background-image", "url('assets/achievement_c.png')");

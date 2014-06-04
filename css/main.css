@@ -100,6 +100,10 @@
    100% { background-position: -63px 0px; }
 }
 
+@font-face {
+  font-family: Flappy;
+  src: url('../assets/Flappy.TTF');
+}
 
 *,
 *:before,
@@ -236,6 +240,8 @@ Screen - Game
    background-image: url('../assets/achievement\ page2.png');
    background-size: cover;
    background-repeat: no-repeat;
+   font-family: Flappy;
+   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 #profiles
@@ -285,6 +291,13 @@ Screen - Game
   left: 5px;
 }
 
+#select0, #select1, #select2, #select3
+{
+  position: absolute;
+  top: 60px;
+  left: 50px;
+}
+
 .bioImage
 {
    display:inline-block;
@@ -302,6 +315,7 @@ Screen - Game
   position: absolute;
   top: 115px;
   left: 60px;
+  -webkit-filter: grayscale(100%);
 }
 
 
@@ -310,6 +324,7 @@ Screen - Game
   position: absolute;
   top: 115px;
   left: 320px;
+  -webkit-filter: grayscale(100%);
 }
 
 #intern2
@@ -317,6 +332,7 @@ Screen - Game
   position: absolute;
   top: 250px;
   left: 60px;
+  -webkit-filter: grayscale(100%);
 }
 
 #intern3
@@ -324,6 +340,7 @@ Screen - Game
   position: absolute;
   top: 250px;
   left: 320px;
+  -webkit-filter: grayscale(100%);
 }
 
 #medal
@@ -377,7 +394,7 @@ Screen - Game
    cursor: pointer;
 }
 
-#replay-profile, #back
+#replay-profile
 {
    position: absolute;
    top: 360px;
@@ -385,6 +402,17 @@ Screen - Game
    height: 115px;
    width: 70px;
 }
+
+#back
+{
+   position: absolute;
+   top: 310px;
+   left: 270px;
+   height: 115px;
+   width: 70px;
+   transform: rotate(180deg);
+}
+
 
 #view-profiles
 {

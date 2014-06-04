@@ -404,6 +404,8 @@ function playerDead()
    $(".animated").css('-webkit-animation-play-state', 'paused');
    
    totalPlays += 1;
+
+   pipeheight = s_pipeheight;
    //drop the bird to the floor
    var playerbottom = $("#player").position().top + $("#player").width(); //we use width because he'll be rotated 90 deg
    var floor = $("#flyarea").height();

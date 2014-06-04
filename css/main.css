@@ -233,7 +233,7 @@ Screen - Game
    left: 65px;
    width: 600px;
    height: 450px;
-   background-image: url('../assets/achievement\ page.png');
+   background-image: url('../assets/achievement\ page2.png');
    background-size: cover;
    background-repeat: no-repeat;
 }
@@ -296,12 +296,14 @@ Screen - Game
    margin: 10px 0 0 5px;
    vertical-align: top;
 }
+
 #intern0
 {
   position: absolute;
   top: 115px;
   left: 60px;
 }
+
 
 #intern1
 {

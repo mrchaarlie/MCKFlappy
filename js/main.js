@@ -15,12 +15,13 @@
    limitations under the License.
 */
 
-var debugmode = true;
+var debugmode = false;
 
 var states = Object.freeze({
    SplashScreen: 0,
    GameScreen: 1,
-   ScoreScreen: 2
+   ScoreScreen: 2,
+   ProfileScreen: 3
 });
 
 var currentstate;
@@ -34,7 +35,7 @@ var jump = -4.6;
 var score = 0;
 var highscore = 0;
 
-var s_pipeheight = 150;
+var s_pipeheight = 200;
 var pipeheight = s_pipeheight;
 var pipewidth = 52;
 var pipes = new Array();
@@ -42,6 +43,37 @@ var pipes = new Array();
 var totalPlays = 0;
 
 var replayclickable = false;
+var profilesclickable = false;
+
+var numinterns = 4;
+
+var interns = [
+{
+  name: "Charles Wu",
+  picture: "assets/charlie.jpg",
+  birdface: "assets/charliebird.png'",
+  description: "Blah blah blah",
+  unlocked: false
+},
+{
+  name: "Stephen Liu",
+  picture: "assets/stephenjpg.jpg",
+  description: "blah",
+  unlocked: false
+},
+{
+  name: "Rachel Macfarlane",
+  picture: "assets/rachel.jpg",
+  description: "blah",
+  unlocked: false
+}, 
+{
+  name: "Ashish",
+  picture: "assets/ashishh.jpg",
+  description: "blah blah",
+  unlocked: false
+} 
+]
 
 //sounds
 var volume = 30;
@@ -56,8 +88,6 @@ buzz.all().setVolume(volume);
 var loopGameloop;
 var loopPipeloop;
 
-
-
 $(document).ready(function() {
    if(window.location.search == "?debug")
       debugmode = true;
@@ -68,7 +98,7 @@ $(document).ready(function() {
    var savedscore = getCookie("highscore");
    if(savedscore != "")
       highscore = parseInt(savedscore);
-   
+
    //start with the splash screen
    showSplash();
 });
@@ -145,6 +175,7 @@ function startGame()
    loopGameloop = setInterval(gameloop, updaterate);
    // loopPipeloop = setInterval(updatePipes, 1400);
    updatePipes();
+   
    //jump from the start!
    playerJump();
 }
@@ -214,7 +245,6 @@ function gameloop() {
    var pipeleft = nextpipeupper.offset().left - 2; // for some reason it starts at the inner pipes offset, not the outer pipes.
    var piperight = pipeleft + pipewidth;
    var pipebottom = pipetop + pipeheight;
-
    
    if(debugmode)
    {
@@ -252,6 +282,7 @@ function gameloop() {
       //and score a point
       playerScore();
    }
+
 }
 
 //Handle space bar
@@ -372,8 +403,6 @@ function playerDead()
    loopGameloop = null;
    loopPipeloop = null;
 
-   pipeheight = s_pipeheight;
-
    //mobile browsers don't support buzz bindOnce event
    if(isIncompatible.any())
    {
@@ -390,7 +419,12 @@ function playerDead()
       });
    }
 
-   //TODO unlock all profiles if 'totalPlays >=3'
+   //unlock all profiles if 'totalPlays >=3'
+   if (totalPlays >= 3) {
+     for (i = 0; i < numinterns; i++) {
+       intern[i].unlocked = true;
+     }
+   }
 }
 
 function showScore()
@@ -422,11 +456,13 @@ function showScore()
    //show the scoreboard
    $("#scoreboard").css({ y: '40px', opacity: 0 }); //move it down so we can slide it up
    $("#replay").css({ y: '40px', opacity: 0 });
+   $("#view-profiles").css({ y: '40px', opacity: 0 });
    $("#scoreboard").transition({ y: '0px', opacity: 1}, 600, 'ease', function() {
       //When the animation is done, animate in the replay button and SWOOSH!
       soundSwoosh.stop();
       soundSwoosh.play();
       $("#replay").transition({ y: '0px', opacity: 1}, 600, 'ease');
+      $("#view-profiles").transition({ y: '0px', opacity: 1}, 600, 'ease');
       
       //also animate in the MEDAL! WOO!
       if(wonmedal)
@@ -438,6 +474,7 @@ function showScore()
    
    //make the replay button clickable
    replayclickable = true;
+   profilesclickable = true;
 }
 
 $("#replay").click(function() {
@@ -460,24 +497,101 @@ $("#replay").click(function() {
    });
 });
 
+$("#replay-profile").click(function() {
+   soundSwoosh.stop();
+   soundSwoosh.play();
+
+   $("#profiles").transition({ y: '-40px', opacity: 0}, 1000, 'ease', function() {
+      $("#profiles").css("display", "none");
+      
+      //start the game over!
+      showSplash();
+   });
+
+});
+
+$("#back").click(function() {
+   $("#selected-profile").transition({ y: '-40px', opacity: 0}, 1000, 'ease', function() {
+      $("#selected-profile :last-child").remove();
+      $("#selected-profile").css("display", "none");
+      
+      //redisplay profile select
+      showProfiles();
+   });
+  
+});
+
+$("#view-profiles").click(function() {
+   if(!profilesclickable)
+      return;
+   else
+      profilesclickable = false;
+
+   //fade out the scoreboard
+   $("#scoreboard").transition({ y: '-40px', opacity: 0}, 1000, 'ease', function() {
+      //when that's done, display us back to nothing
+      $("#scoreboard").css("display", "none");
+      
+      //view intern profiles
+      showProfiles();
+   });
+});
+
+
+for (var i = 0; i < numinterns; i++) {
+  internHandle(i)
+}
+
+function internHandle(i) {
+  $("#intern" + i).click(function() {
+    //check that intern is unlocked
+    if (!interns[i].unlocked)
+      return;
+    else
+      showIntern(i);
+  });
+}
+
+function showIntern(i) {
+   //fade out the scoreboard
+   $("#profiles").transition({ y: '-40px', opacity: 0}, 1000, 'ease', function() {
+      //when that's done, display us back to nothing
+      $("#profiles").css("display", "none");
+       $("#selected-profile").transition({ opacity: 1 }, 2000, 'ease');
+   });
+   $("#selected-profile").css("display", "block");
+   $("#selected-profile").append("<div id='pic'><img src='" + interns[i].picture + "'>");
+   $("#profile-text").innerHTML = interns[i].description;
+}
+  
+
+function showProfiles()
+{
+   currentstate = states.ProfileScreen;
+   $("#profiles").css("display", "block");
+   $("#profiles").transition({ opacity: 1 }, 2000, 'ease');
+   unlockProfiles();
+}
+
+function unlockProfiles()
+{
+  for (var i = 0; i < numinterns; i++) {
+    if (highscore >= 2*i) {
+      interns[i].unlocked = true;
+      $("#lock" + i).css("display", "none");
+    }
+  }
+}
+
 function playerScore()
 {
    score += 1;
-
    if (pipeheight > 90)
       pipeheight -= 10;
 
-   //TODO if score is 2,4,6,8,10 show notification for achievement unlock after 200ms delay
-   if (score == 2)
+   //if score is 2,4,6,8,10 show notification for achievement unlock after 200ms delay
+   if (score == 2 || score == 4 || score == 6 || score == 8)
       showAchievement(score);
-   if (score == 4)
-      showAchievement(score);
-   if (score == 6)
-      showAchievement(score);
-   if (score == 8)
-      showAchievement(score);
-   // if (score == 10)
-   //    showAchievement(score);
 
    updatePipes();
 
@@ -494,12 +608,10 @@ function showAchievement(score)
 
    if (score == 4)
       $("#achievement").css("background-image", "url('assets/achievement_s.png')");
-   if (score == 6)
+   else if (score == 6)
       $("#achievement").css("background-image", "url('assets/achievement_c.png')");
-   if (score == 8)
+   else if (score == 8)
       $("#achievement").css("background-image", "url('assets/achievement_r.png')");
-   // if (score == 10)
-   //    $("#achievement").css("background-image", "url('assets/achievement_s.png')");
 
    $("#achievement").css("display", "block");
    $("#achievement").css({ y: '40px', opacity: 0 }); //move it down so we can slide it up   

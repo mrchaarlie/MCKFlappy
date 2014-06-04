@@ -51,6 +51,7 @@ var interns = [
 {
   name: "Charles Wu",
   picture: "assets/charlie.jpg",
+  birdface: "assets/charliebird.png'",
   description: "Blah blah blah",
   unlocked: false
 },

@@ -427,15 +427,15 @@ Screen - Game
 
 #text, #image
 {
-  display: inline-block;
-   margin: 130px 0 0 20px;
+   display: inline-block;
+   margin: 10px 0 0 20px;
    vertical-align: top;
 }
 
 #summary, #background-info
 {
   display: inline-block;
-   margin: 0 0 0 20px;
+   margin: 130px 0 0 20px;
    vertical-align: top;
 }
 
@@ -446,6 +446,7 @@ Screen - Game
   text-shadow: none !important; 
   color: black;
   font-family: "Arial" !important;
+  width: 300px;
 }
 
 .boundingbox

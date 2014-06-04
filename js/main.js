@@ -45,10 +45,34 @@ var totalPlays = 0;
 var replayclickable = false;
 var profilesclickable = false;
 
-var numinterns = 5;
-var internclickable = new Array(numinterns);
-for (var i = 0; i < numinterns; i++) { internclickable[i] = false };
-var nextunlock = 1;
+var numinterns = 4;
+
+var interns = [
+{
+  name: "Charles Wu",
+  picture: "assets/charlie.jpg",
+  description: "Blah blah blah",
+  unlocked: false
+},
+{
+  name: "Stephen Liu",
+  picture: "assets/stephenjpg.jpg",
+  description: "blah",
+  unlocked: false
+},
+{
+  name: "Rachel Macfarlane",
+  picture: "assets/rachel.jpg",
+  description: "blah",
+  unlocked: false
+}, 
+{
+  name: "Ashish",
+  picture: "assets/ashishh.jpg",
+  description: "blah blah",
+  unlocked: false
+} 
+]
 
 //sounds
 var volume = 30;
@@ -397,7 +421,7 @@ function playerDead()
    //unlock all profiles if 'totalPlays >=3'
    if (totalPlays >= 3) {
      for (i = 0; i < numinterns; i++) {
-       internclickable[i] = true;
+       intern[i].unlocked = true;
      }
    }
 }
@@ -472,6 +496,30 @@ $("#replay").click(function() {
    });
 });
 
+$("#replay-profile").click(function() {
+   soundSwoosh.stop();
+   soundSwoosh.play();
+
+   $("#profiles").transition({ y: '-40px', opacity: 0}, 1000, 'ease', function() {
+      $("#profiles").css("display", "none");
+      
+      //start the game over!
+      showSplash();
+   });
+
+});
+
+$("#back").click(function() {
+   $("#selected-profile").transition({ y: '-40px', opacity: 0}, 1000, 'ease', function() {
+      $("#selected-profile :last-child").remove();
+      $("#selected-profile").css("display", "none");
+      
+      //redisplay profile select
+      showProfiles();
+   });
+  
+});
+
 $("#view-profiles").click(function() {
    if(!profilesclickable)
       return;
@@ -496,7 +544,7 @@ for (var i = 0; i < numinterns; i++) {
 function internHandle(i) {
   $("#intern" + i).click(function() {
     //check that intern is unlocked
-    if (!internclickable[i])
+    if (!interns[i].unlocked)
       return;
     else
       showIntern(i);
@@ -510,22 +558,27 @@ function showIntern(i) {
       $("#profiles").css("display", "none");
        $("#selected-profile").transition({ opacity: 1 }, 2000, 'ease');
    });
+   $("#selected-profile").css("display", "block");
+   $("#selected-profile").append("<div id='pic'><img src='" + interns[i].picture + "'>");
+   $("#profile-text").innerHTML = interns[i].description;
 }
   
 
 function showProfiles()
 {
    currentstate = states.ProfileScreen;
+   $("#profiles").css("display", "block");
    $("#profiles").transition({ opacity: 1 }, 2000, 'ease');
    unlockProfiles();
-   $("#replay").transition({ opacity: 1 }, 2000, 'ease');
 }
 
 function unlockProfiles()
 {
   for (var i = 0; i < numinterns; i++) {
-    if (highscore >= 2*i)
-      internclickable[i] = true;
+    if (highscore >= 2*i) {
+      interns[i].unlocked = true;
+      $("#lock" + i).css("display", "none");
+    }
   }
 }
 
@@ -538,8 +591,6 @@ function playerScore()
    //if score is 2,4,6,8,10 show notification for achievement unlock after 200ms delay
    if (score == 2 || score == 4 || score == 6 || score == 8)
       showAchievement(score);
-   // if (score == 10)
-   //    showAchievement(score);
 
    updatePipes();
 

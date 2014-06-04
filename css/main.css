@@ -225,6 +225,29 @@ Screen - Game
    background-repeat: no-repeat;
 }
 
+#profiles, #selected-profile
+{
+   position: absolute;
+   opacity: 0;
+   top: 5px;
+   left: 65px;
+   width: 600px;
+   height: 450px;
+   background-image: url('../assets/achievement\ page.png');
+   background-size: cover;
+   background-repeat: no-repeat;
+}
+
+#profiles
+{
+  z-index: 999;
+}
+
+#selected-profile
+{
+  z-index: 998;
+}
+
 #scoreboard
 {
    position: absolute;
@@ -239,6 +262,7 @@ Screen - Game
    
    z-index: 1000;
 }
+
 #achievement
 {
    position: absolute;
@@ -253,6 +277,53 @@ Screen - Game
    
    z-index: 1000;
 }
+
+#lock0, #lock1, #lock2, #lock3
+{
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.bioImage
+{
+   display:inline-block;
+}
+
+.bioSummary
+{
+   display: inline-block;
+   margin: 10px 0 0 5px;
+   vertical-align: top;
+}
+#intern0
+{
+  position: absolute;
+  top: 115px;
+  left: 60px;
+}
+
+#intern1
+{
+  position: absolute;
+  top: 115px;
+  left: 320px;
+}
+
+#intern2
+{
+  position: absolute;
+  top: 250px;
+  left: 60px;
+}
+
+#intern3
+{
+  position: absolute;
+  top: 250px;
+  left: 320px;
+}
+
 #medal
 {
    position: absolute;
@@ -298,7 +369,27 @@ Screen - Game
    position: absolute;
    opacity: 0;
    top: 205px;
-   left: 61px;
+   left: 5px;
+   height: 115px;
+   width: 70px;
+   cursor: pointer;
+}
+
+#replay-profile, #back
+{
+   position: absolute;
+   top: 360px;
+   left: 210px;
+   height: 115px;
+   width: 70px;
+}
+
+#view-profiles
+{
+   position: absolute;
+   opacity: 0;
+   top: 205px;
+   left: 120px;
    height: 115px;
    width: 70px;
    cursor: pointer;
@@ -319,6 +410,12 @@ Screen - Game
 {
    left: 60px;
    top: 200px;
+}
+#pic
+{
+  position: absolute;
+  top: 130px;
+  left: 370px;
 }
 
 .bird

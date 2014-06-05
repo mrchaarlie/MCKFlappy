@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+   Copyright 2014 Nebez Briefkani
+   floppybird - index.html
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ -->
+
+ <head>
+  <title>MCKFlappy Bird</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="author" content="Nebez Briefkani" />
+  <meta name="description" content="play floppy bird. a remake of popular game flappy bird using just html/css/js" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+
+  <!-- Open Graph tags -->
+  <meta property="og:title" content="MCKFlappy Bird" />
+  <meta property="og:description" content="play floppy bird. a remake of popular game flappy bird using just html/css/js" />
+  <meta property="og:type" content="website" />
+
+  <!-- Style sheets -->
+  <link href="/stylesheets/reset.css" rel="stylesheet">
+  <link href="/stylesheets/main.css" rel="stylesheet">
+</head>
+<body>
+  <div id="gamecontainer">
+   <div id="gamescreen">
+    <div id="sky" class="animated">
+     <div id="flyarea">
+      <div id="ceiling" class="animated"></div>
+      <!-- This is the flying and pipe area container -->
+      <div id="player" class="bird animated"></div>
+
+      <div id="bigscore"></div>
+
+      <div id="splash"></div>
+
+      <div id="scoreboard">
+       <div id="medal"></div>
+       <div id="currentscore"></div>
+       <div id="highscore"></div>
+       <div id="totalscore"></div>
+       <div id="replay"><img src="/images/replay.png" alt="replay"></div>
+       <div id="view-profiles"><img src="/images/achieve.png" alt="view-profiles"></div>
+     </div>
+     <div id="profiles" font-family='Flappy'>
+      <!-- TODO gross -->
+      <div id="intern0">
+        <div class="bioImage">
+          <img id="img0" src="/images/ashishh.jpg" width=90px height=90px>
+            <img src="/images/ashish_bw.png" id="select0">
+            <img src="/images/lock.gif" width=80px height=80px id="lock0">
+        </div>
+        <div class="bioSummary">
+          Ashish <br/>
+          Product Owner <br/>
+          'Agile Accelerator'
+        </div>
+
+      </div>
+      <div id="intern1">
+        <div class="bioImage">
+          <img id="img1" src="/images/stephenjpg.jpg" width=90px height=90px>
+            <img src="/images/stephen_bw.png" id="select1">
+            <img src="/images/lock.gif" width=80px height=80px id="lock1">
+        </div>
+        <div class="bioSummary">
+          Stephen Liu <br/>
+          Designer <br/>
+          'Photoshop Phreak'
+        </div>
+      </div>
+      <div id="intern2">
+        <div class="bioImage">
+          <img id="img2" src="/images/charlie.jpg" width=90px height=90px>
+            <img src="/images/charlie_bw.png" id="select2">
+            <img src="/images/lock.gif" width=80px height=80px id="lock2">
+        </div>  
+        <div class="bioSummary">
+          Charles Wu<br/>
+          Designer<br/>
+          'Wireframe Wizard'
+        </div>
+      </div>
+      <div id="intern3">
+        <div class="bioImage">
+          <img id="img3" src="/images/rachel.jpg" width=90px height=90px>
+            <img src="/images/rachel_bw.png" id="select3">
+            <img src="/images/lock.gif" width=80px height=80px id="lock3">
+        </div>
+        <div class="bioSummary">
+          Rachel Macfarlane <br/>
+          Developer <br/>
+          'Ruby on Railgun'
+        </div>
+      </div>
+      <div id="replay-profile"><img src="/images/replay.png" alt="replay"></div>
+    </div>
+    <div id="selected-profile">
+      <div id="image">
+        <img id="pic" src="/images/ashishh.jpg" width=90px height=90x>
+      </div>
+      <div id="text">
+        <div id="summary"> </div>
+        <div id="background-info"> </div><br/>
+        <div id="profile-text" font-family="Arial"></div>
+      </div>
+      <div id="back"><img src="/images/replay.png" alt="back"></div>
+    </div>
+
+    <div id="achievement"></div>
+    <!-- Pipes go here! -->
+  </div>
+</div>
+<div id="land" class="animated"><div id="debug"></div></div>
+</div>
+</div>
+<div id="footer">
+ <a href="http://www.dotgears.com/">original game/concept/art by dong nguyen</a>
+ <a href="http://nebezb.com/">recreated by nebez briefkani</a>
+ <a href="http://github.com/nebez/floppybird/">view github project</a>
+</div>
+<div class="boundingbox" id="playerbox"></div>
+<div class="boundingbox" id="pipebox"></div>
+
+<script src="/javascripts/jquery.min.js"></script>
+<script src="/javascripts/jquery.transit.min.js"></script>
+<script src="/javascripts/buzz.min.js"></script>
+<script src="/javascripts/main.js"></script>
+</body>
+</html>

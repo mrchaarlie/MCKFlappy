@@ -314,11 +314,7 @@ $(document).keydown(function(e){
    //space bar!
    if(e.keyCode == 32)
    {
-      //in ScoreScreen, hitting space should click the "replay" button. else it's just a regular spacebar hit
-      if(currentstate == states.ScoreScreen)
-         $("#replay").click();
-      else
-         screenClick();
+      screenClick();
    }
 });
 

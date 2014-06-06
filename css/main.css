@@ -303,6 +303,12 @@ Screen - Game
    display:inline-block;
 }
 
+.bioImage:hover
+{
+   border: 2px solid black;
+   margin: -2px;
+}
+
 .bioSummary
 {
    display: inline-block;
@@ -411,6 +417,7 @@ Screen - Game
    height: 115px;
    width: 70px;
    transform: rotate(180deg);
+   -webkit-transform: rotate(180deg);
 }
 
 

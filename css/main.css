@@ -284,14 +284,14 @@ Screen - Game
    z-index: 1000;
 }
 
-#lock0, #lock1, #lock2, #lock3
+#lock0, #lock1, #lock2, #lock3, #lock4
 {
   position: absolute;
   top: 5px;
   left: 5px;
 }
 
-#select0, #select1, #select2, #select3
+#select0, #select1, #select2, #select3, #select4
 {
   position: absolute;
   top: 60px;
@@ -319,7 +319,7 @@ Screen - Game
 #intern0
 {
   position: absolute;
-  top: 115px;
+  top: 100px;
   left: 60px;
   -webkit-filter: grayscale(100%);
 }
@@ -328,15 +328,15 @@ Screen - Game
 #intern1
 {
   position: absolute;
-  top: 115px;
-  left: 320px;
+  top: 100px;
+  left: 325px;
   -webkit-filter: grayscale(100%);
 }
 
 #intern2
 {
   position: absolute;
-  top: 250px;
+  top: 210px;
   left: 60px;
   -webkit-filter: grayscale(100%);
 }
@@ -344,8 +344,16 @@ Screen - Game
 #intern3
 {
   position: absolute;
-  top: 250px;
-  left: 320px;
+  top: 210px;
+  left: 325px;
+  -webkit-filter: grayscale(100%);
+}
+
+#intern4
+{
+  position: absolute;
+  top: 320px;
+  left: 60px;
   -webkit-filter: grayscale(100%);
 }
 
@@ -403,8 +411,8 @@ Screen - Game
 #replay-profile
 {
    position: absolute;
-   top: 360px;
-   left: 210px;
+   top: 330px;
+   left: 325px;
    height: 115px;
    width: 70px;
 }

@@ -45,11 +45,11 @@ var totalPlays = 0;
 var replayclickable = false;
 var profilesclickable = false;
 
-var numinterns = 4;
+var numinterns = 5;
 
 var interns = [
 {
-  name: "Ashish",
+  name: "Ashish Verma",
   picture: "assets/ashishh.jpg",
   icon: "assets/ashishbird.png",
   bw: "assets/ashish_bw.png",
@@ -91,7 +91,18 @@ var interns = [
   background: "Age 21 <br/> Harvey Mudd College <br/> Computer Science Major",
   description: "Recently returned from a semester abroad in Sweden, I'm still getting used to night that actually lasts more than 3 hours. I love writing code, but originally harbored biology-major intentions before taking my first computer science course. I'm still interested in biology, but programming is my real passion. I enjoy hiking and being outdoors when the weather is cooperative. I also like playing board games; let me know if you ever want to play Settlers of Catan!",
   unlocked: false
-} 
+},
+{
+  name: "Courtney Towner",
+  picture: "assets/courtneyface.png",
+  icon: "assets/courtneybird.png",
+  bw: "assets/courtney_bw.png",
+  birdface: "assets/courtneyflap.png",
+  summary: "Courtney Towner <br /> Product Owner <br /> 'Lithe Leader'",
+  background: "Age 26 <br /> Vanderbilt University <br /> Psychology",
+  description: "I have a BA and MA in Psychology. I moved to NYC from Texas a year ago. I enjoy running and volunteering with Black Girls Code.",
+  unlocked: false
+}
 ]
 
 var currentavatar = null;
@@ -627,7 +638,7 @@ function showProfiles()
 function unlockProfiles()
 {
   for (var i = 0; i < numinterns; i++) {
-    var unlockscores = [2, 4, 6, 8]
+    var unlockscores = [2, 4, 6, 8, 10]
     if (highscore >= unlockscores[i]) {
       interns[i].unlocked = true;
       $("#lock" + i).css("display", "none");
@@ -643,7 +654,7 @@ function playerScore()
       pipeheight -= 10;
 
    //if score is 2,4,6,8,10 show notification for achievement unlock after 200ms delay
-   if (score == 2 || score == 4 || score == 6 || score == 8)
+   if (score == 2 || score == 4 || score == 6 || score == 8 || score == 10)
       showAchievement(score);
 
    updatePipes();
@@ -667,6 +678,8 @@ function showAchievement(score)
       $("#achievement").css("background-image", "url('assets/achievement_c.png')");
    else if (score == 8)
       $("#achievement").css("background-image", "url('assets/achievement_r.png')");
+   else if (score == 10)
+      $("#achievement").css("background-image", "url('assets/achievement_co.png')");
 
    $("#achievement").css("display", "block");
    $("#achievement").css({ y: '40px', opacity: 0 }); //move it down so we can slide it up   
